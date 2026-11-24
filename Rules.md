@@ -2857,6 +2857,10 @@ Option | Description
 <details>
 <summary>Examples</summary>
 
+Use `--private-swiftui-properties state-only` to restrict this rule to `@State` and
+`@StateObject`, preserving synthesized initializers for injected properties such as
+`@Bindable` and `@ObservedObject`. The default, `all`, retains the existing behavior.
+
 ```diff
 - @State var isEnabled = true
 + @State private var isEnabled = true

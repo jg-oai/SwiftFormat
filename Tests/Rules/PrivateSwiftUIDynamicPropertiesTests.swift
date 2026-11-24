@@ -14,7 +14,7 @@ final class PrivateSwiftUIDynamicPropertiesTests: XCTestCase {
         let input = """
         public struct ContentView: View {
             @State var counter = 0
-            @StateObject var model = Model()
+            @StateObject var model: Model = .init()
             @Bindable var viewModel: ViewModel
             @ObservedObject var store: Store
             @Binding var isPresented: Bool
@@ -30,7 +30,7 @@ final class PrivateSwiftUIDynamicPropertiesTests: XCTestCase {
         let output = """
         public struct ContentView: View {
             @State private var counter = 0
-            @StateObject private var model = Model()
+            @StateObject private var model: Model = .init()
             @Bindable var viewModel: ViewModel
             @ObservedObject var store: Store
             @Binding var isPresented: Bool
@@ -52,7 +52,7 @@ final class PrivateSwiftUIDynamicPropertiesTests: XCTestCase {
         let input = """
         struct ContentModifier: ViewModifier {
             @SwiftUI::State var counter = 0
-            @SwiftUI::StateObject var model = Model()
+            @SwiftUI::StateObject var model: Model = .init()
             @SwiftUI::Bindable var viewModel: ViewModel
             @SwiftUI::Environment(\\.openURL) var openURL
         }
@@ -60,7 +60,7 @@ final class PrivateSwiftUIDynamicPropertiesTests: XCTestCase {
         let output = """
         struct ContentModifier: ViewModifier {
             @SwiftUI::State private var counter = 0
-            @SwiftUI::StateObject private var model = Model()
+            @SwiftUI::StateObject private var model: Model = .init()
             @SwiftUI::Bindable var viewModel: ViewModel
             @SwiftUI::Environment(\\.openURL) var openURL
         }
@@ -73,13 +73,13 @@ final class PrivateSwiftUIDynamicPropertiesTests: XCTestCase {
         let input = """
         struct ContentView: View {
             @State internal var counter = 0
-            @StateObject private(set) var model = Model()
+            @StateObject private(set) var model: Model = .init()
             @Previewable @State var isEnabled = true
-            @Previewable @StateObject var previewModel = Model()
+            @Previewable @StateObject var previewModel: Model = .init()
         }
         """
         let options = FormatOptions(privateSwiftUIProperties: .stateOnly)
-        testFormatting(for: input, rule: .privateSwiftUIDynamicProperties, options: options)
+        testFormatting(for: input, rule: .privateSwiftUIDynamicProperties, options: options, exclude: [.redundantInternal])
     }
 
     func testPrivateDynamicProperties() {
