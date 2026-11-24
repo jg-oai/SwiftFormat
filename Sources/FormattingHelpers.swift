@@ -3834,7 +3834,7 @@ extension Formatter {
         insertSpace(indent, at: insertionIndex + 1)
     }
 
-    func makeSwiftUIDynamicPropertiesPrivate() {
+    func makeSwiftUIDynamicPropertiesPrivate(_ properties: PrivateSwiftUIProperties) {
         parseDeclarations().forEachRecursiveDeclaration { declaration in
             guard declaration.isStoredInstanceProperty,
                   isViewType(declaration.parentType) || isViewModifierType(declaration.parentType),
@@ -3843,6 +3843,12 @@ extension Formatter {
                   declaration.parentType?.visibility() == .public ||
                   declaration.parentType?.visibility() == .open
             else { return }
+
+            if properties == .stateOnly,
+               !["@State", "@StateObject", "@SwiftUI::State", "@SwiftUI::StateObject"].contains(propertyWrapper)
+            {
+                return
+            }
 
             let keywordIndex = declaration.keywordIndex
 
