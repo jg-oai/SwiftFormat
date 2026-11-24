@@ -826,6 +826,14 @@ public enum ClosingParenPosition: String, CaseIterable {
     case `default`
 }
 
+/// SwiftUI dynamic properties that should receive private access control.
+public enum PrivateSwiftUIProperties: String, CaseIterable {
+    /// All eligible dynamic properties (default)
+    case all
+    /// Only view-owned State and StateObject properties
+    case stateOnly = "state-only"
+}
+
 public enum SwiftUIPropertiesSortMode: String, CaseIterable {
     /// No sorting
     case none
@@ -1055,6 +1063,7 @@ public struct FormatOptions: CustomStringConvertible {
     public var blankLineAfterSubgroups: Bool
     public var alphabeticallySortedDeclarationPatterns: Set<String>
     public var locale: FormatLocale
+    public var privateSwiftUIProperties: PrivateSwiftUIProperties
     public var swiftUIPropertiesSortMode: SwiftUIPropertiesSortMode
     public var yodaSwap: YodaMode
     public var extensionACLPlacement: ExtensionACLPlacement
@@ -1242,6 +1251,7 @@ public struct FormatOptions: CustomStringConvertible {
                 blankLineAfterSubgroups: Bool = true,
                 alphabeticallySortedDeclarationPatterns: Set<String> = [],
                 locale: FormatLocale = .identifier("en_US"),
+                privateSwiftUIProperties: PrivateSwiftUIProperties = .all,
                 swiftUIPropertiesSortMode: SwiftUIPropertiesSortMode = .none,
                 yodaSwap: YodaMode = .always,
                 extensionACLPlacement: ExtensionACLPlacement = .onExtension,
@@ -1417,6 +1427,7 @@ public struct FormatOptions: CustomStringConvertible {
         self.blankLineAfterSubgroups = blankLineAfterSubgroups
         self.alphabeticallySortedDeclarationPatterns = alphabeticallySortedDeclarationPatterns
         self.locale = locale
+        self.privateSwiftUIProperties = privateSwiftUIProperties
         self.swiftUIPropertiesSortMode = swiftUIPropertiesSortMode
         self.yodaSwap = yodaSwap
         self.extensionACLPlacement = extensionACLPlacement
