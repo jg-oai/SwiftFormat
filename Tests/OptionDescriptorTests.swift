@@ -21,6 +21,18 @@ final class OptionDescriptorTests: XCTestCase {
         XCTAssertThrowsError(try Descriptors.initTypeMinLength.toOptions("true", &options))
     }
 
+    func testPrivateSwiftUIProperties() throws {
+        var options = FormatOptions.default
+        XCTAssertEqual(options.privateSwiftUIProperties, .all)
+        XCTAssertEqual(Descriptors.privateSwiftUIProperties.fromOptions(options), "all")
+        try Descriptors.privateSwiftUIProperties.toOptions("state-only", &options)
+        XCTAssertEqual(options.privateSwiftUIProperties, .stateOnly)
+        XCTAssertEqual(Descriptors.privateSwiftUIProperties.fromOptions(options), "state-only")
+        try Descriptors.privateSwiftUIProperties.toOptions("all", &options)
+        XCTAssertEqual(options.privateSwiftUIProperties, .all)
+        XCTAssertThrowsError(try Descriptors.privateSwiftUIProperties.toOptions("invalid", &options))
+    }
+
     func testWrapClosureBodiesList() throws {
         var options = FormatOptions.default
         XCTAssertEqual(options.wrapClosureBodies, ["Task", "Task.detached"])
